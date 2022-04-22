@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="public/js/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>temperature : <span id="temp"></span></h1>
+    <h1>humidify : <span id="humi"></span></h1>
+    <button onclick="sendData()">test</button>
+
+    <!-- <script src="public/js/main.js"></script> -->
+    <script>
+        const socket = io("http://localhost:3000")
+        const temp = document.getElementById('temp')
+        const humi = document.getElementById('humi')
+
+        socket.on("connection")
+        socket.on("showData", (data)=>{
+            temp.innerHTML = data.temp
+            humi.innerHTML = data.humi
+        })
+        const sendData = (data) =>{
+            socket.emit("updateData", {'temp':10, 'humi':20})
+        }
+    </script>
+</body>
+</html>
