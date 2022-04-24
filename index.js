@@ -44,7 +44,7 @@ let dataGlobal = {'temp':0, 'humi':0}
 io.on("connection", (socket) => {
     try {
         console.log("tersambung")
-        socket.broadcast.emit("showConnection")
+        socket.broadcast.emit("showConnection", {})
         socket.on("updateData", (data) => {
             dataGlobal.temp = data.temp
             dataGlobal.humi = data.humi
