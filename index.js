@@ -30,7 +30,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const sensorRouter = require('./controllers/sensorController')
-app.use("/temp", sensorRouter)
+// app.use("/temp", sensorRouter)
+
+app.post('/temp', async(req, res) => {
+    const data = {
+        temp: req.body.temperature,
+        humi: req.body.humidity
+    }
+    const sensor = new sensorModel(data)
+    try {
+        io.sockets.emit("showData",data)    
+        const newSensor = await sensor.save()
+        res.status(201).json(newSensor)
+    } catch (error) {
+        res.status(400).json({message: error.message})
+    }
+});
 
 app.get('/', (req, res) => {
     res.render('index')
